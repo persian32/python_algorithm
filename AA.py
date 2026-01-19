@@ -1,17 +1,30 @@
 import sys
-# 1. 입력 받기 (input.txt에 숫자 하나만 있다고 가정)
-sys.stdin = open("input.txt", "rt")
-n = int(input())
+sys.stdin = open("input.txt", "rt") # 파일로 입력받을 때 사용
 
-# 2. 체크 리스트 만들기 (패턴 1)
-ch = [0] * (n + 1)
-cnt = 0
+# 패턴 A: 숫자 뒤집기
+def reverse(x):
+    res = 0
+    while x > 0:
+        t = x % 10    # 마지막 자리 숫자 추출
+        res = res * 10 + t
+        x = x // 10   # 마지막 자리 제거
+    return res
 
-# 3. 배수 지우기 로직 (패턴 2)
-for i in range(2, n + 1):
-    if ch[i] == 0:  # 지워지지 않았다면 소수!
-        cnt += 1
-        for j in range(i, n + 1, i): # i의 배수들 몽땅 지우기
-            ch[j] = 1
+# 패턴 B: 소수 판별하기
+def isPrime(x):
+    if x == 1: # 1은 소수가 아님
+        return False
+    # 2부터 자기자신의 절반(또는 제곱근)까지 나누어 떨어지는지 확인
+    for i in range(2, x // 2 + 1):
+        if x % i == 0:
+            return False
+    return True
 
-print(cnt)
+# 메인 실행부
+n = int(input()) # 숫자의 개수 (예: 3)
+a = list(map(int, input().split())) # 숫자 리스트 (예: 32 55 62)
+
+for x in a:
+    tmp = reverse(x)
+    if isPrime(tmp):
+        print(tmp, end=' ')
